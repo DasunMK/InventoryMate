@@ -1,0 +1,193 @@
+/* Container for the entire GRN page */
+.grn-page {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Header */
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Form styling */
+  .form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form input {
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .form button {
+    padding: 12px 20px;
+    background-color: #1054d1;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .form button:hover {
+    background-color: #326094;
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+  }
+  
+  /* Temporary table styles */
+  .temporary-table {
+    margin-top: 30px;
+  }
+  
+  .temporary-table h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .temporary-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  
+  .temporary-table th, .temporary-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .temporary-table th {
+    background-color: #1054d1;
+    color: white;
+  }
+  
+  .temporary-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .temporary-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .temporary-table button {
+    padding: 6px 12px;
+    margin-left: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .temporary-table button:hover {
+    background-color: #0056b3;
+  }
+  
+  .temporary-table .delete-btn {
+    background-color: #dc3545;
+  }
+  
+  .temporary-table .delete-btn:hover {
+    background-color: #c82333;
+  }
+  
+  /* Search GRN section */
+  .search-grn {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .search-grn input {
+    padding: 10px;
+    width: 50%;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* GRN History table styles */
+  .grn-history {
+    margin-top: 30px;
+  }
+  
+  .grn-history h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .grn-history table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  
+  .grn-history th, .grn-history td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .grn-history th {
+    background-color: #1054d1;
+    color: white;
+  }
+  
+  .grn-history tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .grn-history tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .grn-history td {
+    text-align: center;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .grn-page {
+      padding: 10px;
+    }
+  
+    .form input {
+      font-size: 14px;
+    }
+  
+    .form button {
+      font-size: 14px;
+    }
+  
+    .temporary-table table, .grn-history table {
+      font-size: 14px;
+    }
+  
+    .search-grn input {
+      width: 80%;
+    }
+  }
+  

@@ -1,0 +1,218 @@
+/* General Styles */
+.item-management {
+    margin: 20px;
+    max-width: 800px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    
+  }
+  
+  
+  .item-management h2 {
+    font-size: 50px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Form Styling */
+  form {
+    background: #f9f9f9;
+    padding: 20px;
+    margin-top: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  form div {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  form input {
+    padding: 10px;
+    width: 95%;
+    border: 1px solid #86b2e4;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  form input:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  /* Button Styling */
+  form button {
+    padding: 12px 20px;
+    background-color: #1054d1;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s;
+    
+  }
+  
+  form button:hover {
+    background-color: #326094;
+  }
+  
+  /* Error Messages */
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  /* Table Styling */
+  .item-table {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  .item-table h3 {
+    text-align: center;
+    font-size: 22px;
+    color: #333;
+  }
+  
+  .item-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .item-table th, .item-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .item-table th {
+    background-color: #1054d1;
+    color: white;
+    font-size: 16px;
+  }
+  
+  .item-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .item-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  /* Table Button Styling */
+  .item-table button {
+    padding: 6px 12px;
+    margin-left: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+  
+  .item-table .edit-btn {
+    background-color: #008CBA;
+    color: white;
+  }
+  
+  .item-table .edit-btn:hover {
+    background-color: #0073a3;
+  }
+  
+  .item-table .delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+  }
+  
+  .item-table .delete-btn:hover {
+    background-color: #e60000;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .item-management {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    form {
+      padding: 15px;
+    }
+  
+    .item-table table {
+      font-size: 14px;
+    }
+  
+    .item-table th, .item-table td {
+      padding: 8px;
+    }
+  
+    .item-table button {
+      padding: 5px 8px;
+      font-size: 12px;
+    }
+  }
+  
+  /* Filter Section */
+  .filter-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .filter-section input,
+  .filter-section select {
+    padding: 8px;
+    width: 48%;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  /* Item Image Preview */
+.item-image-preview {
+    margin-top: 10px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Table Image Display */
+  .item-table-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .grn-button-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .grn-button {
+    background-color: #1054d1;
+    color: white;
+    margin: 50px;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .grn-button:hover {
+    background-color: #326094;
+    
+  }  
