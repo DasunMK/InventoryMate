@@ -181,7 +181,7 @@ const GRNPage = () => {
       </div>
 
       {/* Button to save */}
-      <button onClick={handleSaveGRN}>Save GRN</button>
+      <button className="save-btn" onClick={handleSaveGRN}>Save</button>
 
       {/* Search functionality for GRN history */}
       <div className="search-grn">

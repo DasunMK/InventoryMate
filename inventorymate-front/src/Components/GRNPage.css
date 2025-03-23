@@ -118,6 +118,7 @@
     margin-top: 20px;
     text-align: center;
   }
+
   
   .search-grn input {
     padding: 10px;
@@ -191,3 +192,25 @@
     }
   }
   
+
+  /* Save button in the temporary table */
+ .save-btn {
+  padding: 10px 18px;
+  background-color: #007bff; /* Green color for Save */
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.save-btn:hover {
+  background-color: #0056b3; /* Darker green on hover */
+}
+
+/* You can also add a disabled state */
+ .save-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
