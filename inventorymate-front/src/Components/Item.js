@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';  // Import Link for navigation
 import './Item.css';
 
-
 const Item = () => {
   const [items, setItems] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
   const [itemName, setItemName] = useState('');
   const [category, setCategory] = useState('');
-  const [stock, setStock] = useState(0);
   const [barcode, setBarcode] = useState('');
-  const [expireDate, setExpireDate] = useState('');
+  const [brand, setBrand] = useState('');
+  const [unitOfMeasure, setUnitOfMeasure] = useState('');
+  const [minStockLevel, setMinStockLevel] = useState(0);
+  const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,8 +19,8 @@ const Item = () => {
 
   useEffect(() => {
     const initialItems = [
-      { id: 'I01', name: 'Item A', category: 'Category A', stock: 20, barcode: '123456', expireDate: '2023-12-31', image: null },
-      { id: 'I02', name: 'Item B', category: 'Category B', stock: 50, barcode: '654321', expireDate: '2024-06-30', image: null },
+      { id: 'I01', name: 'Item A', category: 'Category A', barcode: '123456', brand: 'Brand A', unitOfMeasure: 'kg', minStockLevel: 10, price: 100, image: null },
+      { id: 'I02', name: 'Item B', category: 'Category B', barcode: '654321', brand: 'Brand B', unitOfMeasure: 'L', minStockLevel: 5, price: 50, image: null },
     ];
     setItems(initialItems);
   }, []);
@@ -39,11 +40,6 @@ const Item = () => {
       isValid = false;
     }
 
-    if (!stock || stock <= 0) {
-      formErrors.stock = 'Stock must be greater than 0';
-      isValid = false;
-    }
-
     const barcodeRegex = /^[0-9]+$/;
     if (!barcode.trim()) {
       formErrors.barcode = 'Barcode is required';
@@ -53,8 +49,23 @@ const Item = () => {
       isValid = false;
     }
 
-    if (!expireDate) {
-      formErrors.expireDate = 'Expire Date is required';
+    if (!brand.trim()) {
+      formErrors.brand = 'Brand is required';
+      isValid = false;
+    }
+
+    if (!unitOfMeasure.trim()) {
+      formErrors.unitOfMeasure = 'Unit of Measure is required';
+      isValid = false;
+    }
+
+    if (!minStockLevel || minStockLevel <= 0) {
+      formErrors.minStockLevel = 'Minimum Stock Level must be greater than 0';
+      isValid = false;
+    }
+
+    if (!price || price <= 0) {
+      formErrors.price = 'Price must be greater than 0';
       isValid = false;
     }
 
@@ -71,9 +82,11 @@ const Item = () => {
       id: `I${String(items.length + 1).padStart(2, '0')}`, // Generate ID in format I01, I02, etc.
       name: itemName,
       category,
-      stock,
       barcode,
-      expireDate,
+      brand,
+      unitOfMeasure,
+      minStockLevel,
+      price,
       image, // Add image to item
     };
 
@@ -85,9 +98,11 @@ const Item = () => {
 
     setItemName('');
     setCategory('');
-    setStock(0);
     setBarcode('');
-    setExpireDate('');
+    setBrand('');
+    setUnitOfMeasure('');
+    setMinStockLevel(0);
+    setPrice('');
     setImage(null); // Reset image after adding/updating
     setCurrentItem(null);
     setErrors({});
@@ -103,9 +118,11 @@ const Item = () => {
     setCurrentItem(item);
     setItemName(item.name);
     setCategory(item.category);
-    setStock(item.stock);
     setBarcode(item.barcode);
-    setExpireDate(item.expireDate);
+    setBrand(item.brand);
+    setUnitOfMeasure(item.unitOfMeasure);
+    setMinStockLevel(item.minStockLevel);
+    setPrice(item.price);
     setImage(item.image); // Set image when editing
     setErrors({});
   };
@@ -165,19 +182,35 @@ const Item = () => {
           {errors.category && <p className="error">{errors.category}</p>}
         </div>
         <div>
-          <label>Stock:</label>
-          <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} required />
-          {errors.stock && <p className="error">{errors.stock}</p>}
-        </div>
-        <div>
           <label>Barcode:</label>
           <input type="text" value={barcode} onChange={(e) => setBarcode(e.target.value)} required />
           {errors.barcode && <p className="error">{errors.barcode}</p>}
         </div>
         <div>
-          <label>Expire Date:</label>
-          <input type="date" value={expireDate} onChange={(e) => setExpireDate(e.target.value)} required />
-          {errors.expireDate && <p className="error">{errors.expireDate}</p>}
+          <label>Brand:</label>
+          <input type="text" value={brand} onChange={(e) => setBrand(e.target.value)} required />
+          {errors.brand && <p className="error">{errors.brand}</p>}
+        </div>
+        <div>
+          <label>Unit of Measure:</label>
+          <select value={unitOfMeasure} onChange={(e) => setUnitOfMeasure(e.target.value)} required>
+            <option value="">Select Measure</option>
+            <option value="kg">kg</option>
+            <option value="L">L</option>
+            <option value="Pack">Pack</option>
+            <option value="Bottles">Bottles</option>
+          </select>
+          {errors.unitOfMeasure && <p className="error">{errors.unitOfMeasure}</p>}
+        </div>
+        <div>
+          <label>Minimum Stock Level:</label>
+          <input type="number" value={minStockLevel} onChange={(e) => setMinStockLevel(e.target.value)} required />
+          {errors.minStockLevel && <p className="error">{errors.minStockLevel}</p>}
+        </div>
+        <div>
+          <label>Price:</label>
+          <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} required />
+          {errors.price && <p className="error">{errors.price}</p>}
         </div>
         <div>
           <label>Item Image:</label>
@@ -196,9 +229,11 @@ const Item = () => {
               <th>Item ID</th>
               <th>Item Name</th>
               <th>Category</th>
-              <th>Stock</th>
               <th>Barcode</th>
-              <th>Expire Date</th>
+              <th>Brand</th>
+              <th>Unit of Measure</th>
+              <th>Min Stock Level</th>
+              <th>Price</th>
               <th>Item Image</th>
               <th>Actions</th>
             </tr>
@@ -209,9 +244,11 @@ const Item = () => {
                 <td>{item.id}</td> {/* Display Item ID */}
                 <td>{item.name}</td>
                 <td>{item.category}</td>
-                <td>{item.stock}</td>
                 <td>{item.barcode}</td>
-                <td>{item.expireDate}</td>
+                <td>{item.brand}</td>
+                <td>{item.unitOfMeasure}</td>
+                <td>{item.minStockLevel}</td>
+                <td>{item.price}</td>
                 <td>
                   {item.image ? (
                     <img src={item.image} alt="Item" className="item-table-image" />
@@ -227,7 +264,7 @@ const Item = () => {
             ))}
             {filteredItems.length === 0 && (
               <tr>
-                <td colSpan="8" style={{ textAlign: 'center', color: 'red' }}>
+                <td colSpan="10" style={{ textAlign: 'center', color: 'red' }}>
                   No items found
                 </td>
               </tr>

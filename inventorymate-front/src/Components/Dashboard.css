@@ -1,0 +1,111 @@
+/* Dashboard.css */
+
+.dashboard-container {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f4f7fa, #ffffff);
+    padding: 30px;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  
+  .dashboard-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  .overview-section, .alerts-section, .activity-section, .cost-overview {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+    color: #444;
+    margin-bottom: 15px;
+  }
+  
+  .overview-card, .alert-card, .cost-card {
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: inline-block;
+    width: 30%;
+    margin-right: 2%;
+  }
+  
+  .overview-card:last-child, .alert-card:last-child, .cost-card:last-child {
+    margin-right: 0;
+  }
+  
+  .icon {
+    font-size: 3rem;
+    color: #1d70ff;
+    margin-bottom: 10px;
+  }
+  
+  .quick-add {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .quick-add-btn {
+    background-color: #1d70ff;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .quick-add-btn:hover {
+    background-color: #005bb5;
+  }
+  
+  .activity-section ul {
+    list-style-type: none;
+    padding-left: 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .activity-section li {
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-nav {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .dashboard-nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .dashboard-nav ul li {
+    display: inline-block;
+    margin-right: 30px;
+  }
+  
+  .dashboard-nav a {
+    text-decoration: none;
+    color: #1d70ff;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  
+  .dashboard-nav a:hover {
+    color: #005bb5;
+  }
+  

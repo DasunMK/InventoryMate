@@ -1,216 +1,237 @@
-/* Container for the entire GRN page */
+/* General Styles */
 .grn-page {
-    margin: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Header */
-  h2 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  /* Form styling */
-  .form {
-    background-color: #f9f9f9;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .form input {
-    padding: 10px;
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .form button {
-    padding: 12px 20px;
-    background-color: #1054d1;
-    color: white;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .form button:hover {
-    background-color: #326094;
-  }
-  
-  .error {
-    color: red;
-    font-size: 14px;
-  }
-  
-  /* Temporary table styles */
-  .temporary-table {
-    margin-top: 30px;
-  }
-  
-  .temporary-table h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .temporary-table table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 16px;
-  }
-  
-  .temporary-table th, .temporary-table td {
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .temporary-table th {
-    background-color: #1054d1;
-    color: white;
-  }
-  
-  .temporary-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .temporary-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .temporary-table button {
-    padding: 6px 12px;
-    margin-left: 5px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .temporary-table button:hover {
-    background-color: #0056b3;
-  }
-  
-  .temporary-table .delete-btn {
-    background-color: #dc3545;
-  }
-  
-  .temporary-table .delete-btn:hover {
-    background-color: #c82333;
-  }
-  
-  /* Search GRN section */
-  .search-grn {
-    margin-top: 20px;
-    text-align: center;
-  }
+  margin: 20px;
+  max-width: 1000px; /* Expanded width for the table */
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
 
-  
-  .search-grn input {
-    padding: 10px;
-    width: 50%;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  /* GRN History table styles */
-  .grn-history {
-    margin-top: 30px;
-  }
-  
-  .grn-history h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .grn-history table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 16px;
-  }
-  
-  .grn-history th, .grn-history td {
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .grn-history th {
-    background-color: #1054d1;
-    color: white;
-  }
-  
-  .grn-history tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .grn-history tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .grn-history td {
-    text-align: center;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .grn-page {
-      padding: 10px;
-    }
-  
-    .form input {
-      font-size: 14px;
-    }
-  
-    .form button {
-      font-size: 14px;
-    }
-  
-    .temporary-table table, .grn-history table {
-      font-size: 14px;
-    }
-  
-    .search-grn input {
-      width: 80%;
-    }
-  }
-  
-
-  /* Save button in the temporary table */
- .save-btn {
-  padding: 10px 18px;
-  background-color: #007bff; /* Green color for Save */
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 20px;
+.grn-page h2 {
+  font-size: 50px;
+  margin-bottom: 20px;
   text-align: center;
+  color: #333;
 }
 
-.save-btn:hover {
-  background-color: #0056b3; /* Darker green on hover */
+/* Form Styling */
+.grn-page .form {
+  background: #f9f9f9;
+  padding: 20px;
+  margin-top: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
 }
 
-/* You can also add a disabled state */
- .save-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.grn-page .form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.grn-page .form input,
+.grn-page .form select {
+  padding: 10px;
+  width: 95%;
+  border: 1px solid #86b2e4;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.grn-page .form input:focus,
+.grn-page .form select:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Button Styling */
+.grn-page .form button {
+  padding: 12px 20px;
+  background-color: #1054d1;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.grn-page .form button:hover {
+  background-color: #326094;
+}
+
+/* Error Messages */
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Temporary Table Styling */
+.grn-page .temporary-table {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.grn-page .temporary-table h3 {
+  text-align: center;
+  font-size: 22px;
+  color: #333;
+}
+
+.grn-page .temporary-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  table-layout: fixed; /* Control column widths */
+}
+
+.grn-page .temporary-table th,
+.grn-page .temporary-table td {
+  padding: 15px; /* Increased padding for better readability */
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.grn-page .temporary-table th {
+  background-color: #1054d1;
+  color: white;
+  font-size: 16px;
+}
+
+.grn-page .temporary-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.grn-page .temporary-table tr:hover {
+  background-color: #ddd;
+}
+
+/* Table Button Styling */
+.grn-page .temporary-table button {
+  padding: 6px 12px;
+  margin-left: 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.grn-page .temporary-table .update-btn {
+  background-color: #008CBA; /* Blue for Update */
+  color: white;
+}
+
+.grn-page .temporary-table .update-btn:hover {
+  background-color: #0073a3; /* Darker Blue on hover */
+}
+
+.grn-page .temporary-table .delete-btn {
+  background-color: #ff4d4d; /* Red for Delete */
+  color: white;
+}
+
+.grn-page .temporary-table .delete-btn:hover {
+  background-color: #e60000; /* Darker Red on hover */
+}
+
+/* Save Button Styling */
+.grn-page .save-btn {
+  padding: 12px 20px;
+  background-color: #1054d1;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s;
+  margin-top: 20px;
+}
+
+.grn-page .save-btn:hover {
+  background-color: #326094;
+}
+
+/* Search Section */
+.grn-page .search-grn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.grn-page .search-grn input {
+  padding: 8px;
+  width: 50%;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* GRN History Table Styling */
+.grn-page .grn-history {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.grn-page .grn-history table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  table-layout: fixed;
+}
+
+.grn-page .grn-history th,
+.grn-page .grn-history td {
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.grn-page .grn-history th {
+  background-color: #1054d1;
+  color: white;
+  font-size: 16px;
+}
+
+.grn-page .grn-history tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.grn-page .grn-history tr:hover {
+  background-color: #ddd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .grn-page {
+      width: 100%;
+      padding: 10px;
+  }
+
+  .grn-page .form {
+      padding: 15px;
+  }
+
+  .grn-page .temporary-table table {
+      font-size: 14px;
+  }
+
+  .grn-page .temporary-table th,
+  .grn-page .temporary-table td {
+      padding: 8px;
+  }
+
+  .grn-page .temporary-table button {
+      padding: 5px 8px;
+      font-size: 12px;
+  }
+
+  .grn-page .save-btn {
+      padding: 10px 18px;
+      font-size: 14px;
+  }
+
+  .grn-page .search-grn input {
+      width: 100%;
+  }
 }

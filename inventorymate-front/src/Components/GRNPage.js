@@ -6,6 +6,8 @@ const GRNPage = () => {
   const [barcode, setBarcode] = useState(''); // Barcode input
   const [stockReceived, setStockReceived] = useState(''); // Received stock input
   const [grnNumber, setGrnNumber] = useState(''); // GRN number input
+  const [expireDate, setExpireDate] = useState(''); // Expire date input
+  const [manufactureDate, setManufactureDate] = useState(''); // Manufacture date input
   const [temporaryItems, setTemporaryItems] = useState([]); // Temporary storage of received items
   const [errors, setErrors] = useState({}); // Form errors
 
@@ -15,8 +17,8 @@ const GRNPage = () => {
   // Sample items list (you could fetch this from an API or database)
   useEffect(() => {
     const initialItems = [
-      { id: 'I01', name: 'Item A', category: 'Category A', stock: 20, barcode: '123456', expireDate: '2023-12-31' },
-      { id: 'I02', name: 'Item B', category: 'Category B', stock: 50, barcode: '654321', expireDate: '2024-06-30' },
+      { id: 'I01', name: 'Item A', category: 'Category A', stock: 20, barcode: '123456', expireDate: '2023-12-31', manufactureDate: '2022-01-15' },
+      { id: 'I02', name: 'Item B', category: 'Category B', stock: 50, barcode: '654321', expireDate: '2024-06-30', manufactureDate: '2023-02-10' },
     ];
     setItems(initialItems);
   }, []);
@@ -41,6 +43,16 @@ const GRNPage = () => {
       isValid = false;
     }
 
+    if (!expireDate.trim()) {
+      formErrors.expireDate = 'Expire Date is required';
+      isValid = false;
+    }
+
+    if (!manufactureDate.trim()) {
+      formErrors.manufactureDate = 'Manufacture Date is required';
+      isValid = false;
+    }
+
     setErrors(formErrors);
     return isValid;
   };
@@ -60,6 +72,8 @@ const GRNPage = () => {
       name: item.name,
       barcode: item.barcode,
       receivedStock: parseInt(stockReceived), // Add received stock to the temporary list
+      expireDate, // Add expire date to temporary item
+      manufactureDate, // Add manufacture date to temporary item
     };
 
     setTemporaryItems([...temporaryItems, newTemporaryItem]);
@@ -67,6 +81,8 @@ const GRNPage = () => {
     // Reset the form
     setBarcode('');
     setStockReceived('');
+    setExpireDate('');
+    setManufactureDate('');
     setErrors({});
   };
 
@@ -80,6 +96,8 @@ const GRNPage = () => {
     const itemToUpdate = temporaryItems.find((item) => item.id === itemId);
     setBarcode(itemToUpdate.barcode);
     setStockReceived(itemToUpdate.receivedStock);
+    setExpireDate(itemToUpdate.expireDate);
+    setManufactureDate(itemToUpdate.manufactureDate);
     setTemporaryItems(temporaryItems.filter((item) => item.id !== itemId));
   };
 
@@ -140,6 +158,22 @@ const GRNPage = () => {
         />
         {errors.stockReceived && <p className="error">{errors.stockReceived}</p>}
 
+        <label>Expire Date:</label>
+        <input
+          type="date"
+          value={expireDate}
+          onChange={(e) => setExpireDate(e.target.value)}
+        />
+        {errors.expireDate && <p className="error">{errors.expireDate}</p>}
+
+        <label>Manufacture Date:</label>
+        <input
+          type="date"
+          value={manufactureDate}
+          onChange={(e) => setManufactureDate(e.target.value)}
+        />
+        {errors.manufactureDate && <p className="error">{errors.manufactureDate}</p>}
+
         <button onClick={handleAddItem}>Add Item</button>
       </div>
 
@@ -153,6 +187,8 @@ const GRNPage = () => {
               <th>Item Name</th>
               <th>Barcode</th>
               <th>Received Stock</th>
+              <th>Expire Date</th>
+              <th>Manufacture Date</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -163,6 +199,8 @@ const GRNPage = () => {
                 <td>{item.name}</td>
                 <td>{item.barcode}</td>
                 <td>{item.receivedStock}</td>
+                <td>{item.expireDate}</td>
+                <td>{item.manufactureDate}</td>
                 <td>
                   <button onClick={() => handleUpdateItem(item.id)}>Update</button>
                   <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
@@ -171,7 +209,7 @@ const GRNPage = () => {
             ))}
             {temporaryItems.length === 0 && (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center', color: 'red' }}>
+                <td colSpan="7" style={{ textAlign: 'center', color: 'red' }}>
                   No items added yet
                 </td>
               </tr>
@@ -212,7 +250,7 @@ const GRNPage = () => {
             ))}
             {filteredGrnHistory.length === 0 && (
               <tr>
-                <td colSpan="2" style={{ textAlign: 'center', color: 'red' }}>
+                <td colSpan="2" style={{ textAlign: 'center', color: 'red' }} >
                   No matching GRNs found
                 </td>
               </tr>
