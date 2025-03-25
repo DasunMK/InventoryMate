@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';  // Import Link for navigation
+import { Link } from 'react-router-dom';
 import './Item.css';
 
 const Item = () => {
@@ -13,14 +13,15 @@ const Item = () => {
   const [minStockLevel, setMinStockLevel] = useState(0);
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
+  const [expireDate, setExpireDate] = useState('');
   const [errors, setErrors] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     const initialItems = [
-      { id: 'I01', name: 'Item A', category: 'Category A', barcode: '123456', brand: 'Brand A', unitOfMeasure: 'kg', minStockLevel: 10, price: 100, image: null },
-      { id: 'I02', name: 'Item B', category: 'Category B', barcode: '654321', brand: 'Brand B', unitOfMeasure: 'L', minStockLevel: 5, price: 50, image: null },
+      { id: 'I01', name: 'Item A', category: 'Category A', barcode: '123456', brand: 'Brand A', unitOfMeasure: 'kg', minStockLevel: 10, price: 100, image: null, stock: 20, expireDate: '2024-12-31' },
+      { id: 'I02', name: 'Item B', category: 'Category B', barcode: '654321', brand: 'Brand B', unitOfMeasure: 'L', minStockLevel: 5, price: 50, image: null, stock: 50, expireDate: '2025-06-30' },
     ];
     setItems(initialItems);
   }, []);
@@ -69,6 +70,11 @@ const Item = () => {
       isValid = false;
     }
 
+    if (!expireDate) {
+      formErrors.expireDate = 'Expire Date is required';
+      isValid = false;
+    }
+
     setErrors(formErrors);
     return isValid;
   };
@@ -79,7 +85,7 @@ const Item = () => {
     if (!validateForm()) return;
 
     const newItem = {
-      id: `I${String(items.length + 1).padStart(2, '0')}`, // Generate ID in format I01, I02, etc.
+      id: `I${String(items.length + 1).padStart(2, '0')}`,
       name: itemName,
       category,
       barcode,
@@ -87,7 +93,9 @@ const Item = () => {
       unitOfMeasure,
       minStockLevel,
       price,
-      image, // Add image to item
+      image,
+      stock: 0, // Initially, the stock is 0, and it will be updated from GRN
+      expireDate,
     };
 
     if (currentItem) {
@@ -103,7 +111,8 @@ const Item = () => {
     setUnitOfMeasure('');
     setMinStockLevel(0);
     setPrice('');
-    setImage(null); // Reset image after adding/updating
+    setExpireDate('');
+    setImage(null);
     setCurrentItem(null);
     setErrors({});
   };
@@ -123,7 +132,8 @@ const Item = () => {
     setUnitOfMeasure(item.unitOfMeasure);
     setMinStockLevel(item.minStockLevel);
     setPrice(item.price);
-    setImage(item.image); // Set image when editing
+    setExpireDate(item.expireDate);
+    setImage(item.image);
     setErrors({});
   };
 
@@ -141,6 +151,21 @@ const Item = () => {
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
       (selectedCategory === '' || item.category === selectedCategory)
   );
+
+  // Calculate days until expiration
+  const calculateExpirationDays = (expireDate) => {
+    const today = new Date();
+    const expiration = new Date(expireDate);
+    const diffTime = expiration - today;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Days difference
+  };
+
+  // Handle Stock Update from GRN Page
+  const handleUpdateStock = (id, newStock) => {
+    setItems(items.map((item) =>
+      item.id === id ? { ...item, stock: item.stock + newStock } : item
+    ));
+  };
 
   return (
     <div className="item-management">
@@ -213,6 +238,11 @@ const Item = () => {
           {errors.price && <p className="error">{errors.price}</p>}
         </div>
         <div>
+          <label>Expire Date:</label>
+          <input type="date" value={expireDate} onChange={(e) => setExpireDate(e.target.value)} required />
+          {errors.expireDate && <p className="error">{errors.expireDate}</p>}
+        </div>
+        <div>
           <label>Item Image:</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
           {image && <img src={image} alt="Item Preview" className="item-image-preview" />}
@@ -232,43 +262,38 @@ const Item = () => {
               <th>Barcode</th>
               <th>Brand</th>
               <th>Unit of Measure</th>
+              <th>Stock</th>
               <th>Min Stock Level</th>
               <th>Price</th>
               <th>Item Image</th>
+              <th>Expire Date</th>
+              <th>Expiration Days</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredItems.map((item) => (
               <tr key={item.id}>
-                <td>{item.id}</td> {/* Display Item ID */}
+                <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td>{item.category}</td>
                 <td>{item.barcode}</td>
                 <td>{item.brand}</td>
                 <td>{item.unitOfMeasure}</td>
+                <td>{item.stock}</td>
                 <td>{item.minStockLevel}</td>
                 <td>{item.price}</td>
                 <td>
-                  {item.image ? (
-                    <img src={item.image} alt="Item" className="item-table-image" />
-                  ) : (
-                    <span>No Image</span>
-                  )}
+                  {item.image ? <img src={item.image} alt="Item" className="item-table-image" /> : 'No Image'}
                 </td>
+                <td>{item.expireDate}</td>
+                <td>{calculateExpirationDays(item.expireDate)} days</td>
                 <td>
                   <button className="edit-btn" onClick={() => handleEdit(item)}>Edit</button>
                   <button className="delete-btn" onClick={() => handleDelete(item.id)}>Delete</button>
                 </td>
               </tr>
             ))}
-            {filteredItems.length === 0 && (
-              <tr>
-                <td colSpan="10" style={{ textAlign: 'center', color: 'red' }}>
-                  No items found
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
       </div>

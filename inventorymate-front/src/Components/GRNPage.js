@@ -202,8 +202,8 @@ const GRNPage = () => {
                 <td>{item.expireDate}</td>
                 <td>{item.manufactureDate}</td>
                 <td>
-                  <button onClick={() => handleUpdateItem(item.id)}>Update</button>
-                  <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
+                  <button className='update-btn' onClick={() => handleUpdateItem(item.id)}>Update</button>
+                  <button className='delete-btn' onClick={() => handleDeleteItem(item.id)}>Delete</button>
                 </td>
               </tr>
             ))}
