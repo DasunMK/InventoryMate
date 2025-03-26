@@ -1,0 +1,102 @@
+/* Navbar.css */
+.navbar {
+    background-color: #1a1943;
+    padding: 10px 20px;
+    position: float;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .logo-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  
+  .navbar-logo img {
+    height: 55px;
+    width: auto;
+    margin-right: 20px;
+  }
+  
+  .navbar-links {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    margin-left: 50px;
+  }
+  
+  .navbar-links li {
+    margin: 0 25px;
+  }
+  
+  .navbar-links a {
+    color: rgb(243, 241, 241);
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .navbar-links a:hover {
+    color: #f39c12;
+  }
+  
+  .navbar-buttons {
+    display: flex;
+    justify-content: flex-end; /* Aligns buttons to the right corner */
+    margin-left: 500px; /* Ensures that buttons stay on the right side */
+  }
+  
+  .navbar-btn {
+    background-color: #458bcc;
+    color: white;
+    width: 140px;
+    height: 40px;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+  }
+  
+  .navbar-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .navbar-btn:focus {
+    outline: none;
+  }
+  
+  .signup-btn {
+    background-color: #1054d1;
+  }
+  
+  .signup-btn:hover {
+    background-color: #326094;
+  }
+  
+  .logout-btn {
+    background-color: #1054d1;
+  }
+  
+  .logout-btn:hover {
+    background-color: #326094; /* Darker red for hover effect */
+  }
+  

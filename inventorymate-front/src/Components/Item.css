@@ -1,7 +1,7 @@
 /* General Styles */
 .item-management {
   margin: 20px;
-  max-width: 1000px; /* Increased max width for larger table */
+  max-width: 1200px; /* Increased max width for larger table */
   margin: auto;
   font-family: Arial, sans-serif;
 }
@@ -90,10 +90,11 @@ form button:hover {
   border-collapse: collapse;
   margin-top: 10px;
   table-layout: fixed; /* Helps in better control of the column widths */
+  min-width: 900px; /* Ensures the table is bigger */
 }
 
 .item-table th, .item-table td {
-  padding: 15px; /* Increased padding for better readability */
+  padding: 20px; /* Increased padding for better readability */
   text-align: left;
   border: 1px solid #ddd;
 }
