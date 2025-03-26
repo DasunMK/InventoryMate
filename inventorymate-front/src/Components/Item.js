@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import Axios for API requests
 import { Link } from 'react-router-dom';
 import './Item.css';
 
@@ -18,15 +19,18 @@ const Item = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
+  // Fetch items from the backend API when the component is mounted
   useEffect(() => {
-    const initialItems = [
-      { id: 'I01', name: 'Item A', category: 'Category A', barcode: '123456', brand: 'Brand A', unitOfMeasure: 'kg', minStockLevel: 10, price: 100, image: null, stock: 20, expireDate: '2024-12-31' },
-      { id: 'I02', name: 'Item B', category: 'Category B', barcode: '654321', brand: 'Brand B', unitOfMeasure: 'L', minStockLevel: 5, price: 50, image: null, stock: 50, expireDate: '2025-06-30' },
-    ];
-    setItems(initialItems);
+    axios.get('/items') // Adjust the URL if your backend is different
+      .then((res) => {
+        setItems(res.data); // Set items from the response data
+      })
+      .catch((err) => {
+        console.error('Error fetching items:', err);
+      });
   }, []);
 
-  // Validation function
+  // Validation function for the form
   const validateForm = () => {
     let formErrors = {};
     let isValid = true;
@@ -35,12 +39,10 @@ const Item = () => {
       formErrors.itemName = 'Item Name is required';
       isValid = false;
     }
-
     if (!category.trim()) {
       formErrors.category = 'Category is required';
       isValid = false;
     }
-
     const barcodeRegex = /^[0-9]+$/;
     if (!barcode.trim()) {
       formErrors.barcode = 'Barcode is required';
@@ -49,27 +51,22 @@ const Item = () => {
       formErrors.barcode = 'Barcode must only contain numbers';
       isValid = false;
     }
-
     if (!brand.trim()) {
       formErrors.brand = 'Brand is required';
       isValid = false;
     }
-
     if (!unitOfMeasure.trim()) {
       formErrors.unitOfMeasure = 'Unit of Measure is required';
       isValid = false;
     }
-
     if (!minStockLevel || minStockLevel <= 0) {
       formErrors.minStockLevel = 'Minimum Stock Level must be greater than 0';
       isValid = false;
     }
-
     if (!price || price <= 0) {
       formErrors.price = 'Price must be greater than 0';
       isValid = false;
     }
-
     if (!expireDate) {
       formErrors.expireDate = 'Expire Date is required';
       isValid = false;
@@ -85,7 +82,7 @@ const Item = () => {
     if (!validateForm()) return;
 
     const newItem = {
-      id: `I${String(items.length + 1).padStart(2, '0')}`,
+      id: `I${String(items.length + 1).padStart(2, '0')}`, // Format the ID as I01, I02, etc.
       name: itemName,
       category,
       barcode,
@@ -94,35 +91,39 @@ const Item = () => {
       minStockLevel,
       price,
       image,
-      stock: 0, // Initially, the stock is 0, and it will be updated from GRN
+      stock: 0, // Initially, the stock is 0
       expireDate,
     };
 
     if (currentItem) {
-      setItems(items.map((item) => (item.id === currentItem.id ? newItem : item)));
+      // Update item if it's an existing item
+      axios.put(`/items/${currentItem.id}`, newItem)
+        .then((res) => {
+          setItems(items.map((item) => (item.id === currentItem.id ? res.data : item)));
+          clearForm();
+        });
     } else {
-      setItems([...items, newItem]);
+      // Create new item
+      axios.post('/items', newItem)
+        .then((res) => {
+          setItems([...items, res.data]);
+          clearForm();
+        });
     }
-
-    setItemName('');
-    setCategory('');
-    setBarcode('');
-    setBrand('');
-    setUnitOfMeasure('');
-    setMinStockLevel(0);
-    setPrice('');
-    setExpireDate('');
-    setImage(null);
-    setCurrentItem(null);
-    setErrors({});
   };
 
-  // Handle Delete
+  // Handle Delete Item
   const handleDelete = (id) => {
-    setItems(items.filter((item) => item.id !== id));
+    axios.delete(`/items/${id}`)
+      .then(() => {
+        setItems(items.filter((item) => item.id !== id));
+      })
+      .catch((err) => {
+        console.error('Error deleting item:', err);
+      });
   };
 
-  // Handle Edit
+  // Handle Edit Item
   const handleEdit = (item) => {
     setCurrentItem(item);
     setItemName(item.name);
@@ -141,11 +142,26 @@ const Item = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file)); // Convert the file to a URL to preview
+      setImage(URL.createObjectURL(file)); // Convert the file to a URL for preview
     }
   };
 
-  // **🔍 Filtering Logic**
+  // Clear form fields after submitting or editing
+  const clearForm = () => {
+    setItemName('');
+    setCategory('');
+    setBarcode('');
+    setBrand('');
+    setUnitOfMeasure('');
+    setMinStockLevel(0);
+    setPrice('');
+    setExpireDate('');
+    setImage(null);
+    setCurrentItem(null);
+    setErrors({});
+  };
+
+  // Filter items based on search query and selected category
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -158,13 +174,6 @@ const Item = () => {
     const expiration = new Date(expireDate);
     const diffTime = expiration - today;
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Days difference
-  };
-
-  // Handle Stock Update from GRN Page
-  const handleUpdateStock = (id, newStock) => {
-    setItems(items.map((item) =>
-      item.id === id ? { ...item, stock: item.stock + newStock } : item
-    ));
   };
 
   return (
@@ -194,7 +203,7 @@ const Item = () => {
         </select>
       </div>
 
-      {/* Form */}
+      {/* Form to Add / Update Item */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Item Name:</label>
@@ -283,9 +292,7 @@ const Item = () => {
                 <td>{item.stock}</td>
                 <td>{item.minStockLevel}</td>
                 <td>{item.price}</td>
-                <td>
-                  {item.image ? <img src={item.image} alt="Item" className="item-table-image" /> : 'No Image'}
-                </td>
+                <td>{item.image ? <img src={item.image} alt="Item" className="item-table-image" /> : 'No Image'}</td>
                 <td>{item.expireDate}</td>
                 <td>{calculateExpirationDays(item.expireDate)} days</td>
                 <td>
