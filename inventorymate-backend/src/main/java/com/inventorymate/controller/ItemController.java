@@ -3,6 +3,7 @@ package com.inventorymate.controller;
 import com.inventorymate.model.Item;
 import com.inventorymate.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,28 +21,33 @@ public class ItemController {
         return itemRepository.findAll();
     }
 
-    // Get a single item by ID
-    @GetMapping("/{id}")
-    public Item getItem(@PathVariable String id) {
-        return itemRepository.findById(id).orElse(null);
-    }
-
     // Create a new item
     @PostMapping
-    public Item createItem(@RequestBody Item item) {
-        return itemRepository.save(item);
+    public ResponseEntity<Item> createItem(@RequestBody Item item) {
+        Item savedItem = itemRepository.save(item);
+        return ResponseEntity.ok(savedItem);
     }
 
     // Update an existing item
     @PutMapping("/{id}")
-    public Item updateItem(@PathVariable String id, @RequestBody Item item) {
-        item.setId(id);
-        return itemRepository.save(item);
+    public ResponseEntity<Item> updateItem(@PathVariable String id, @RequestBody Item item) {
+        if (itemRepository.existsById(id)) {
+            item.setId(id);
+            Item updatedItem = itemRepository.save(item);
+            return ResponseEntity.ok(updatedItem);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // Delete an item
     @DeleteMapping("/{id}")
-    public void deleteItem(@PathVariable String id) {
-        itemRepository.deleteById(id);
+    public ResponseEntity<Void> deleteItem(@PathVariable String id) {
+        if (itemRepository.existsById(id)) {
+            itemRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -19,11 +19,11 @@ const Item = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  // Fetch items from the backend API when the component is mounted
+  
   useEffect(() => {
-    axios.get('/items') // Adjust the URL if your backend is different
+    axios.get('/items') 
       .then((res) => {
-        setItems(res.data); // Set items from the response data
+        setItems(res.data); 
       })
       .catch((err) => {
         console.error('Error fetching items:', err);
@@ -91,7 +91,7 @@ const Item = () => {
       minStockLevel,
       price,
       image,
-      stock: 0, // Initially, the stock is 0
+      stock: 0, 
       expireDate,
     };
 

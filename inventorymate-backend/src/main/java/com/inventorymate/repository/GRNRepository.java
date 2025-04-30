@@ -1,10 +1,10 @@
 package com.inventorymate.repository;
 
-import com.inventorymate.model.Item;
+import com.inventorymate.model.GRN;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ItemRepository extends MongoRepository<Item, String> {
-    Item findByBarcode(String barcode);
+public interface GRNRepository extends MongoRepository<GRN, String> {
+    GRN findByGrnNumber(String grnNumber);
 }
