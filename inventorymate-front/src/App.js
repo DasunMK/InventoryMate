@@ -5,6 +5,7 @@ import Dashboard from './Components/Dashboard';
 import ItemPage from './Components/Item';
 import UserPage from './Components/User';
 import CategoryPage from './Components/Category';
+import AddCategoryPage from './Components/AddCategory';
 import GRNPage from './Components/GRNPage';
 
 import axios from 'axios';
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/users" element={<UserPage />} />
         <Route path="/categories" element={<CategoryPage />} />
         <Route path="/grn" element={<GRNPage />} /> 
+        <Route path="/AddCategory" element={<AddCategoryPage/>} />
       </Routes>
     </Router>
   );
