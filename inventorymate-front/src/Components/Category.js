@@ -115,7 +115,7 @@ const Category = () => {
       </div>
 
       {/* Add Category Button */}
-<div style={{ textAlign: 'left', marginBottom: '20px' }}>
+<div style={{ textAlign: 'left', marginBottom: '20px'}}>
   <Link to="/AddCategory">
     <button className="add-btn">Add Category</button>
   </Link>
