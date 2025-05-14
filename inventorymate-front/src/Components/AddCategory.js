@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CategoryContext } from './CategoryContext';
 import './AddCategory.css';
 
-const AddCategory = ({ onAddCategory }) => {
+const AddCategory = () => {
   const [categoryID, setCategoryID] = useState('');
   const [categoryName, setCategoryName] = useState('');
   const [categoryDescription, setCategoryDescription] = useState('');
   const [errors, setErrors] = useState({});
+  const { addCategory } = useContext(CategoryContext);
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -17,12 +19,10 @@ const AddCategory = ({ onAddCategory }) => {
       formErrors.categoryID = 'Category ID is required';
       isValid = false;
     }
-
     if (!categoryName.trim()) {
       formErrors.categoryName = 'Category Name is required';
       isValid = false;
     }
-
     if (!categoryDescription.trim()) {
       formErrors.categoryDescription = 'Description is required';
       isValid = false;
@@ -42,7 +42,7 @@ const AddCategory = ({ onAddCategory }) => {
       description: categoryDescription,
     };
 
-    onAddCategory(newCategory);
+    addCategory(newCategory);
     navigate('/');
   };
 
