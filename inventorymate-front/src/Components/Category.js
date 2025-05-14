@@ -1,41 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Import Link
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import axios from 'axios';
+import autoTable from 'jspdf-autotable'; // this makes the function work
 import './Category.css';
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState(null);
+  const [categoryID, setCategoryId] = useState('');
   const [categoryName, setCategoryName] = useState('');
   const [categoryDescription, setCategoryDescription] = useState('');
   const [errors, setErrors] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
 
-  const API_URL = 'http://localhost:8080/categories'; // Adjust if needed
-
   useEffect(() => {
-    fetchCategories();
+    const initialCategories = [
+      { id: 'C01', name: 'Food', description: 'Items like snacks, beverages' },
+      { id: 'C02', name: 'Cleaning', description: 'Cleaning supplies like detergent' },
+    ];
+    setCategories(initialCategories);
   }, []);
 
-  const fetchCategories = async () => {
-    try {
-      const res = await axios.get(API_URL);
-      setCategories(res.data);
-    } catch (err) {
-      console.error('Error fetching categories:', err);
-    }
-  };
-
   const validateForm = () => {
-    const formErrors = {};
+    let formErrors = {};
     let isValid = true;
 
     if (!categoryName.trim()) {
       formErrors.categoryName = 'Category Name is required';
       isValid = false;
     }
+
     if (!categoryDescription.trim()) {
       formErrors.categoryDescription = 'Description is required';
       isValid = false;
@@ -45,38 +39,33 @@ const Category = () => {
     return isValid;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const newCategory = {
+      id: currentCategory
+        ? currentCategory.id
+        : `C${String(categories.length + 1).padStart(2, '0')}`,
       name: categoryName,
       description: categoryDescription,
     };
 
-    try {
-      if (currentCategory) {
-        await axios.put(`${API_URL}/${currentCategory.id}`, {
-          ...newCategory,
-          id: currentCategory.id,
-        });
-      } else {
-        await axios.post(API_URL, newCategory);
-      }
-      fetchCategories();
-      resetForm();
-    } catch (err) {
-      console.error('Error saving category:', err);
+    if (currentCategory) {
+      setCategories(categories.map((cat) => (cat.id === currentCategory.id ? newCategory : cat)));
+    } else {
+      setCategories([...categories, newCategory]);
     }
+
+    setCategoryId('');
+    setCategoryName('');
+    setCategoryDescription('');
+    setCurrentCategory(null);
+    setErrors({});
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${API_URL}/${id}`);
-      fetchCategories();
-    } catch (err) {
-      console.error('Error deleting category:', err);
-    }
+  const handleDelete = (id) => {
+    setCategories(categories.filter((cat) => cat.id !== id));
   };
 
   const handleEdit = (category) => {
@@ -86,25 +75,24 @@ const Category = () => {
     setErrors({});
   };
 
-  const resetForm = () => {
-    setCurrentCategory(null);
-    setCategoryName('');
-    setCategoryDescription('');
-    setErrors({});
-  };
-
   const generatePDF = () => {
     const doc = new jsPDF();
+  
     doc.text('Category List', 14, 15);
-
-    const tableRows = categories.map(cat => [cat.id, cat.name, cat.description]);
-
+    const tableColumn = ['Category ID', 'Name', 'Description'];
+    const tableRows = [];
+  
+    categories.forEach(cat => {
+      const rowData = [cat.id, cat.name, cat.description];
+      tableRows.push(rowData);
+    });
+  
     doc.autoTable({
-      head: [['Category ID', 'Name', 'Description']],
+      head: [tableColumn],
       body: tableRows,
       startY: 20,
     });
-
+  
     doc.save('categories.pdf');
   };
 
@@ -126,37 +114,16 @@ const Category = () => {
         />
       </div>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Category Name"
-          value={categoryName}
-          onChange={(e) => setCategoryName(e.target.value)}
-        />
-        {errors.categoryName && <span className="error">{errors.categoryName}</span>}
-
-        <textarea
-          placeholder="Description"
-          value={categoryDescription}
-          onChange={(e) => setCategoryDescription(e.target.value)}
-        />
-        {errors.categoryDescription && <span className="error">{errors.categoryDescription}</span>}
-
-        <button type="submit" className="add-btn">
-          {currentCategory ? 'Update Category' : 'Add Category'}
-        </button>
-        {currentCategory && (
-          <button type="button" onClick={resetForm} className="cancel-btn">
-            Cancel
-          </button>
-        )}
-      </form>
-
-      {/* PDF Download */}
-      <div style={{ textAlign: 'left', marginBottom: '20px' }}>
-        <button className="pdf" onClick={generatePDF}>Download PDF</button>
-      </div>
+      {/* Add Category Button */}
+<div style={{ textAlign: 'left', marginBottom: '20px'}}>
+  <Link to="/AddCategory">
+    <button className="addcat">Add Category</button>
+  </Link>
+</div>
+    
+<div style={{ textAlign: 'left', marginBottom: '20px' }}>
+  <button className="pdf" onClick={generatePDF}>Download PDF</button>
+</div>
 
       {/* Table */}
       <div className="category-table">
