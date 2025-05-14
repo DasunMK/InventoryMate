@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import Axios for API requests
+import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Item.css';
 
 const Item = () => {
@@ -19,18 +21,16 @@ const Item = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  
   useEffect(() => {
-    axios.get('/items') 
+    axios.get('/items')
       .then((res) => {
-        setItems(res.data); 
+        setItems(res.data);
       })
       .catch((err) => {
         console.error('Error fetching items:', err);
       });
   }, []);
 
-  // Validation function for the form
   const validateForm = () => {
     let formErrors = {};
     let isValid = true;
@@ -76,13 +76,12 @@ const Item = () => {
     return isValid;
   };
 
-  // Handle Add / Update Item
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const newItem = {
-      id: `I${String(items.length + 1).padStart(2, '0')}`, // Format the ID as I01, I02, etc.
+      id: `I${String(items.length + 1).padStart(2, '0')}`,
       name: itemName,
       category,
       barcode,
@@ -91,39 +90,38 @@ const Item = () => {
       minStockLevel,
       price,
       image,
-      stock: 0, 
+      stock: 0,
       expireDate,
     };
 
     if (currentItem) {
-      // Update item if it's an existing item
       axios.put(`/items/${currentItem.id}`, newItem)
         .then((res) => {
           setItems(items.map((item) => (item.id === currentItem.id ? res.data : item)));
+          toast.success('Item updated successfully!');
           clearForm();
-        });
+        })
+        .catch(() => toast.error('Failed to update item'));
     } else {
-      // Create new item
       axios.post('/items', newItem)
         .then((res) => {
           setItems([...items, res.data]);
+          toast.success('Item added successfully!');
           clearForm();
-        });
+        })
+        .catch(() => toast.error('Failed to add item'));
     }
   };
 
-  // Handle Delete Item
   const handleDelete = (id) => {
     axios.delete(`/items/${id}`)
       .then(() => {
         setItems(items.filter((item) => item.id !== id));
+        toast.success('Item deleted successfully!');
       })
-      .catch((err) => {
-        console.error('Error deleting item:', err);
-      });
+      .catch(() => toast.error('Failed to delete item'));
   };
 
-  // Handle Edit Item
   const handleEdit = (item) => {
     setCurrentItem(item);
     setItemName(item.name);
@@ -138,15 +136,13 @@ const Item = () => {
     setErrors({});
   };
 
-  // Handle image upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file)); // Convert the file to a URL for preview
+      setImage(URL.createObjectURL(file));
     }
   };
 
-  // Clear form fields after submitting or editing
   const clearForm = () => {
     setItemName('');
     setCategory('');
@@ -161,31 +157,27 @@ const Item = () => {
     setErrors({});
   };
 
-  // Filter items based on search query and selected category
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
       (selectedCategory === '' || item.category === selectedCategory)
   );
 
-  // Calculate days until expiration
   const calculateExpirationDays = (expireDate) => {
     const today = new Date();
     const expiration = new Date(expireDate);
     const diffTime = expiration - today;
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Days difference
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
   return (
     <div className="item-management">
       <h2>Item Management</h2>
 
-      {/* Button to navigate to GRN Page */}
       <div className="grn-button-container">
-        <Link to="/grn" className="grn-button">Go to GRN Page</Link>
+        <Link to="/grn" className="grn-button">ADD STOCK</Link>
       </div>
 
-      {/* Search & Filter Inputs */}
       <div className="filter-section">
         <input
           type="text"
@@ -196,25 +188,32 @@ const Item = () => {
         <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
           <option value="">All Categories</option>
           {[...new Set(items.map((item) => item.category))].map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
+            <option key={category} value={category}>{category}</option>
           ))}
         </select>
       </div>
 
-      {/* Form to Add / Update Item */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Item Name:</label>
           <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} required />
           {errors.itemName && <p className="error">{errors.itemName}</p>}
         </div>
+
         <div>
           <label>Category:</label>
-          <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} required />
+          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+            <option value="">Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Beverage">Beverage</option>
+            <option value="Fruits">Fruits</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Stationery">Stationery</option>
+            <option value="Others">Others</option>
+          </select>
           {errors.category && <p className="error">{errors.category}</p>}
         </div>
+
         <div>
           <label>Barcode:</label>
           <input type="text" value={barcode} onChange={(e) => setBarcode(e.target.value)} required />
@@ -251,15 +250,10 @@ const Item = () => {
           <input type="date" value={expireDate} onChange={(e) => setExpireDate(e.target.value)} required />
           {errors.expireDate && <p className="error">{errors.expireDate}</p>}
         </div>
-        <div>
-          <label>Item Image:</label>
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-          {image && <img src={image} alt="Item Preview" className="item-image-preview" />}
-        </div>
+        
         <button type="submit">{currentItem ? 'Update' : 'Add'} Item</button>
       </form>
 
-      {/* Table */}
       <div className="item-table">
         <h3>List of Items</h3>
         <table>
@@ -270,13 +264,13 @@ const Item = () => {
               <th>Category</th>
               <th>Barcode</th>
               <th>Brand</th>
-              <th>Unit of Measure</th>
+              <th>Unit</th>
               <th>Stock</th>
-              <th>Min Stock Level</th>
+              <th>Min Stock</th>
               <th>Price</th>
-              <th>Item Image</th>
+              <th>Image</th>
               <th>Expire Date</th>
-              <th>Expiration Days</th>
+              <th>Expires In</th>
               <th>Actions</th>
             </tr>
           </thead>

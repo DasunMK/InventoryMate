@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Dashboard.css'; // Import the updated stylesheet
-import { FaBox, FaShoppingCart, FaBell, FaCog } from 'react-icons/fa'; // Importing some icons
+import './Dashboard.css'; 
+import { FaBox, FaShoppingCart, FaBell, FaCog } from 'react-icons/fa';
+import Slideshow from './Slideshow';
+
 
 const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Dashboard</h1>
       
+      <Slideshow />
+
       <div className="overview-section">
         <h2>Inventory Overview</h2>
         <div className="overview-card">
@@ -50,13 +54,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* <nav className="dashboard-nav">
-        <ul>
-          <li><Link to="/items">Item Page</Link></li>
-          <li><Link to="/users">User Page</Link></li>
-          <li><Link to="/categories">Category Page</Link></li>
-        </ul>
-      </nav> */}
+      
     </div>
   );
 };

@@ -25,13 +25,18 @@ const Navbar = () => {
           <li>
             <Link to="/categories">Category</Link>
           </li>
+          <li>
+            <Link to="/usermanagement">Users</Link>
+          </li>
 
         </ul>
         <div className="navbar-buttons">
-          <Link to="/SignUp">
-            <button className="navbar-btn signup-btn">Sign Up</button>
+          <Link to="/login">
+            <button className="navbar-btn signup-btn">Log In</button>
           </Link>
-          <button className="navbar-btn logout-btn">Log In</button>
+          <Link to="/register">
+          <button className="navbar-btn logout-btn">Sign up</button>
+          </Link>
         </div>
       </div>
     </nav>
