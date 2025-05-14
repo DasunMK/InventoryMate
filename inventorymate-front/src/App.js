@@ -14,6 +14,12 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:8080'; // Adjust if your backend runs elsewhere
 
 const App = () => {
+  const handleAddCategory = (newCategory) => {
+    console.log("New category added:", newCategory);
+    // Optionally send to backend here
+    // axios.post('/api/categories', newCategory);
+  };
+  
   return (
     <Router>
       <Navbar />
@@ -23,7 +29,7 @@ const App = () => {
         <Route path="/users" element={<UserPage />} />
         <Route path="/categories" element={<CategoryPage />} />
         <Route path="/grn" element={<GRNPage />} /> 
-        <Route path="/AddCategory" element={<AddCategoryPage/>} />
+        <Route path="/AddCategory" element={<AddCategoryPage onAddCategory={handleAddCategory} />} />
       </Routes>
     </Router>
   );
