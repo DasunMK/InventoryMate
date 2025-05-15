@@ -5,34 +5,43 @@ import Dashboard from './Components/Dashboard';
 import ItemPage from './Components/Item';
 import UserPage from './Components/User';
 import CategoryPage from './Components/Category';
-import AddCategoryPage from './Components/AddCategory';
 import GRNPage from './Components/GRNPage';
+import AddCategoryPage from './Components/AddCategory';
+
 
 import axios from 'axios';
 
-// ✅ Set default base URL for all API requests
-axios.defaults.baseURL = 'http://localhost:8080'; // Adjust if your backend runs elsewhere
+
+axios.defaults.baseURL = 'http://localhost:8080'; 
+
+
+
+
 
 const App = () => {
-  const handleAddCategory = (newCategory) => {
-    console.log("New category added:", newCategory);
-    // Optionally send to backend here
-    // axios.post('/api/categories', newCategory);
-  };
+
   
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/items" element={<ItemPage />} />
-        <Route path="/users" element={<UserPage />} />
-        <Route path="/categories" element={<CategoryPage />} />
-        <Route path="/grn" element={<GRNPage />} /> 
-        <Route path="/AddCategory" element={<AddCategoryPage onAddCategory={handleAddCategory} />} />
-      </Routes>
+      <div>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/items" element={<ItemPage />} />
+          <Route path="/users" element={<UserPage />} />
+          <Route path="/categories" element={<CategoryPage />} />
+          <Route path="/grn" element={<GRNPage />} />
+          <Route path="/AddCategory" element={<AddCategoryPage onAddCategory={handleAddCategory} />} />
+        </Routes>
+
+      
+       
+      </div>
     </Router>
   );
 };
+
+const handleAddCategory = (newCategory) => {
+    console.log("New category added:", newCategory);}
 
 export default App;

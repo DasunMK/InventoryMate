@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import 'jspdf-autotable'; // This is required to extend jsPDF with autoTable
 import { CategoryContext } from './CategoryContext';
 import './Category.css';
 
@@ -52,13 +52,27 @@ const Category = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    doc.text('Category List', 14, 15);
-    const tableRows = categories.map(cat => [cat.id, cat.name, cat.description]);
+    
+    // Safety check
+    if (typeof doc.autoTable !== 'function') {
+      alert('Error: jsPDF autoTable plugin not loaded');
+      return;
+    }
+
+    doc.text("Category List", 14, 10);
+
+    const rows = categories.map((cat) => [
+      cat.id,
+      cat.name,
+      cat.description
+    ]);
+
     doc.autoTable({
-      head: [['Category ID', 'Name', 'Description']],
-      body: tableRows,
       startY: 20,
+      head: [['ID', 'Name', 'Description']],
+      body: rows,
     });
+
     doc.save('categories.pdf');
   };
 
