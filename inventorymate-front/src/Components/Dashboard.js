@@ -6,7 +6,7 @@ import { FaBox, FaShoppingCart, FaBell, FaCog } from 'react-icons/fa'; // Import
 const Dashboard = () => {
   return (
     <div className="dashboard-container">
-      <h1 className="dashboard-title">Home Inventory Dashboard</h1>
+      <h1 className="dashboard-title">Dashboard</h1>
       
       <div className="overview-section">
         <h2>Inventory Overview</h2>
@@ -18,9 +18,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="quick-add">
-        <button className="quick-add-btn">Quick Add New Item</button>
-      </div>
+      
 
       <div className="alerts-section">
         <h2>Low Stock Alert</h2>

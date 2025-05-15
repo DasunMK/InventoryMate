@@ -10,11 +10,11 @@ const Navbar = () => {
       <div className="navbar-container">
         <div className="navbar-logo">
           <img src={logo} alt="POS System Logo" className="logo-img" />
-          <span className='logo-name'>InventoryMate</span>
+          
         </div>
         <ul className="navbar-links">
           <li>
-            <Link to="/">Dashbord</Link>
+            <Link to="/">Dashboard</Link>
           </li>
           <li>
             <Link to="/Items">Items</Link>
@@ -31,7 +31,7 @@ const Navbar = () => {
           <Link to="/SignUp">
             <button className="navbar-btn signup-btn">Sign Up</button>
           </Link>
-          <button className="navbar-btn logout-btn">Log Out</button>
+          <button className="navbar-btn logout-btn">Log In</button>
         </div>
       </div>
     </nav>

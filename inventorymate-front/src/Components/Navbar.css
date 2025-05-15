@@ -1,8 +1,9 @@
 /* Navbar.css */
 .navbar {
-    background-color: #1a1943;
+    background-color: #13133d;
     padding: 10px 20px;
-    position: float;
+    position: float
+;
     width: 100%;
     top: 0;
     left: 0;
@@ -21,13 +22,15 @@
     font-weight: bold;
     color: white;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
+    
   }
   
   .navbar-logo img {
-    height: 55px;
+    height: 150px;
     width: auto;
-    margin-right: 20px;
+    margin-right: 120px;
+    margin-left: 70px;
   }
   
   .navbar-links {

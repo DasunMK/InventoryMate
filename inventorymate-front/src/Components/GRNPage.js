@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './GRNPage.css';  // Optional CSS styling
+import axios from 'axios';
+import './GRNPage.css';
 
 const GRNPage = () => {
   const [items, setItems] = useState([]); // Items list
@@ -10,56 +11,26 @@ const GRNPage = () => {
   const [manufactureDate, setManufactureDate] = useState(''); // Manufacture date input
   const [temporaryItems, setTemporaryItems] = useState([]); // Temporary storage of received items
   const [errors, setErrors] = useState({}); // Form errors
-
   const [grnHistory, setGrnHistory] = useState([]); // History of generated GRNs
   const [searchQuery, setSearchQuery] = useState(''); // Search query for GRN number
 
-  // Sample items list (you could fetch this from an API or database)
+  // Fetch items from the backend API when the component is mounted
   useEffect(() => {
-    const initialItems = [
-      { id: 'I01', name: 'Item A', category: 'Category A', stock: 20, barcode: '123456', expireDate: '2023-12-31', manufactureDate: '2022-01-15' },
-      { id: 'I02', name: 'Item B', category: 'Category B', stock: 50, barcode: '654321', expireDate: '2024-06-30', manufactureDate: '2023-02-10' },
-    ];
-    setItems(initialItems);
+    axios.get('http://localhost:8080/grn/items')
+      .then((response) => {
+        setItems(response.data); // Set items from the response data
+      })
+      .catch((error) => {
+        console.error('Error fetching items:', error);
+      });
   }, []);
-
-  // Function to validate the form
-  const validateForm = () => {
-    let formErrors = {};
-    let isValid = true;
-
-    if (!barcode.trim()) {
-      formErrors.barcode = 'Barcode is required';
-      isValid = false;
-    }
-
-    if (!stockReceived || stockReceived <= 0) {
-      formErrors.stockReceived = 'Received stock must be greater than 0';
-      isValid = false;
-    }
-
-    if (!grnNumber.trim()) {
-      formErrors.grnNumber = 'GRN Number is required';
-      isValid = false;
-    }
-
-    if (!expireDate.trim()) {
-      formErrors.expireDate = 'Expire Date is required';
-      isValid = false;
-    }
-
-    if (!manufactureDate.trim()) {
-      formErrors.manufactureDate = 'Manufacture Date is required';
-      isValid = false;
-    }
-
-    setErrors(formErrors);
-    return isValid;
-  };
 
   // Handle adding item to the temporary table
   const handleAddItem = () => {
-    if (!validateForm()) return;
+    if (!barcode || !stockReceived || !grnNumber) {
+      setErrors({ ...errors, barcode: 'Please fill all fields' });
+      return;
+    }
 
     const item = items.find((item) => item.barcode === barcode);
     if (!item) {
@@ -67,18 +38,15 @@ const GRNPage = () => {
       return;
     }
 
-    const newTemporaryItem = {
-      id: item.id,
-      name: item.name,
-      barcode: item.barcode,
-      receivedStock: parseInt(stockReceived), // Add received stock to the temporary list
-      expireDate, // Add expire date to temporary item
-      manufactureDate, // Add manufacture date to temporary item
+    const newItem = {
+      ...item,
+      receivedStock: stockReceived,
+      expireDate,
+      manufactureDate
     };
+    setTemporaryItems([...temporaryItems, newItem]);
 
-    setTemporaryItems([...temporaryItems, newTemporaryItem]);
-
-    // Reset the form
+    // Reset form fields
     setBarcode('');
     setStockReceived('');
     setExpireDate('');
@@ -86,9 +54,28 @@ const GRNPage = () => {
     setErrors({});
   };
 
-  // Handle deleting an item from the temporary table
-  const handleDeleteItem = (itemId) => {
-    setTemporaryItems(temporaryItems.filter((item) => item.id !== itemId));
+  // Handle saving the GRN to the backend
+  const handleSaveGRN = () => {
+    if (temporaryItems.length === 0) {
+      setErrors({ ...errors, stockReceived: 'Please add at least one item to the list' });
+      return;
+    }
+
+    const grn = {
+      grnNumber,
+      date: new Date().toLocaleDateString(),
+      items: temporaryItems,
+    };
+
+    axios.post('http://localhost:8080/grn', grn)
+      .then((response) => {
+        setGrnHistory([response.data, ...grnHistory]);
+        setTemporaryItems([]); // Clear temporary items after saving
+        setGrnNumber('');
+      })
+      .catch((error) => {
+        console.error('Error saving GRN:', error);
+      });
   };
 
   // Handle updating an item in the temporary table
@@ -101,24 +88,9 @@ const GRNPage = () => {
     setTemporaryItems(temporaryItems.filter((item) => item.id !== itemId));
   };
 
-  // Handle saving the GRN
-  const handleSaveGRN = () => {
-    if (temporaryItems.length === 0) {
-      setErrors({ ...errors, stockReceived: 'Please add at least one item to the list' });
-      return;
-    }
-
-    // Save the GRN history
-    const grn = {
-      grnNumber: grnNumber,
-      date: new Date().toLocaleDateString(),
-      items: temporaryItems,
-    };
-    setGrnHistory([grn, ...grnHistory]);
-
-    // Reset form after saving
-    setGrnNumber('');
-    setTemporaryItems([]);
+  // Handle deleting an item from the temporary table
+  const handleDeleteItem = (itemId) => {
+    setTemporaryItems(temporaryItems.filter((item) => item.id !== itemId));
   };
 
   // Filter GRN history based on the search query
@@ -130,7 +102,7 @@ const GRNPage = () => {
 
   return (
     <div className="grn-page">
-      <h2>Goods Receipt Note (GRN)</h2>
+      <h2>Goods Receipt Note</h2>
 
       {/* Form to input GRN number, barcode, and received stock */}
       <div className="form">
@@ -202,8 +174,8 @@ const GRNPage = () => {
                 <td>{item.expireDate}</td>
                 <td>{item.manufactureDate}</td>
                 <td>
-                  <button className='update-btn' onClick={() => handleUpdateItem(item.id)}>Update</button>
-                  <button className='delete-btn' onClick={() => handleDeleteItem(item.id)}>Delete</button>
+                  <button className="update-btn" onClick={() => handleUpdateItem(item.id)}>Update</button>
+                  <button className="delete-btn" onClick={() => handleDeleteItem(item.id)}>Delete</button>
                 </td>
               </tr>
             ))}

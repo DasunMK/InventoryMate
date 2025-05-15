@@ -1,1 +1,2 @@
-# InventoryMate
+InventoryMate
+InventoryMate is a simple and efficient home inventory management system designed to help individuals organize and track their household items. With this app, users can easily catalog their possessions, monitor their stock levels, and keep track of important details like purchase dates, expiry dates, and item quantities. It allows users to add, update, and search for items effortlessly, ensuring a well-maintained home inventory. Whether you're managing groceries, electronics, or personal belongings, InventoryMate provides a user-friendly platform to keep everything organized and accessible.
