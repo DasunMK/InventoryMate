@@ -104,8 +104,6 @@ const Category = () => {
   };
 };
 
-
-
   const filteredCategories = categories.filter((cat) =>
     cat.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
