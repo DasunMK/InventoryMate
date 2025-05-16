@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'; // This is required to extend jsPDF with autoTable
 import { CategoryContext } from './CategoryContext';
+import logo from '../assets/images/logo.png';
 import './Category.css';
 
 const Category = () => {
@@ -50,31 +51,60 @@ const Category = () => {
     setErrors({});
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    
-    // Safety check
-    if (typeof doc.autoTable !== 'function') {
-      alert('Error: jsPDF autoTable plugin not loaded');
-      return;
-    }
+ const generatePDF = () => {
+  const doc = new jsPDF();
 
-    doc.text("Category List", 14, 10);
+  if (typeof doc.autoTable !== 'function') {
+    alert('Error: jsPDF autoTable plugin not loaded');
+    return;
+  }
+
+  const img = new Image();
+  img.src = logo;
+
+  img.onload = function () {
+    // Add logo to PDF
+    doc.addImage(img, 'PNG', 14, 10, 30,30 ); // (x, y, width, height)
+
+    // Title next to logo
+    doc.setFont("times", "bold");
+    doc.setFontSize(18);
+    doc.text("Category List", 80, 27);
 
     const rows = categories.map((cat) => [
       cat.id,
       cat.name,
-      cat.description
+      cat.description,
     ]);
 
+    // Create styled table
     doc.autoTable({
-      startY: 20,
+      startY: 50,
       head: [['ID', 'Name', 'Description']],
       body: rows,
+      styles: {
+        font: 'times',
+        fontSize: 12,
+      },
+      headStyles: {
+        fillColor: [63, 81, 181],
+        textColor: 255,
+        fontStyle: 'bold',
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245],
+      },
     });
 
     doc.save('categories.pdf');
   };
+
+  img.onerror = function () {
+    alert("Failed to load the logo image.");
+  };
+};
+
+
 
   const filteredCategories = categories.filter((cat) =>
     cat.name.toLowerCase().includes(searchQuery.toLowerCase())
